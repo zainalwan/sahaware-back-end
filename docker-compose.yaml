@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:15.0
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=sahaware_back_end
+    volumes:
+      - "postgres:/var/lib/postgresql/data"
+
+volumes:
+  postgres:
