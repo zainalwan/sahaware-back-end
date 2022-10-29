@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { authorize, basicResponse } = require('../util');
+const { authorize } = require('../middleware');
+const { basicResponse } = require('../util');
 
 router.get('/', async (req, res) => {
   let result = await db.query('SELECT * FROM categories');
@@ -23,12 +24,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/create', async (req, res) => {
-  let [scheme, credential] = req.get('authorization').split(' ');
-  if (!authorize(scheme, credential)) {
-    return basicResponse(res, 401, 'Invalid credential.');
-  }
-
+router.post('/create', authorize, async (req, res) => {
   let name = req.body.name;
   if (name == undefined) {
     return basicResponse(res, 400, 'Category name is required.');
