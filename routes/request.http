@@ -1,0 +1,53 @@
+### Register
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "zainalwan4@gmail.com",
+  "password": "mangga90Kering?"
+}
+
+### Login
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "zainalwan4@gmail.com",
+  "password": "mangga90Kering?"
+}
+
+### List categories
+GET http://localhost:3000/api/article-category/ HTTP/1.1
+Content-Type: application/json
+
+### Create category
+POST http://localhost:3000/api/article-category/create HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphaW5hbHdhbjRAZ21haWwuY29tIiwiaWF0IjoxNjY3MDU0NzQ2fQ.-QZyHdg6tv_L_9ElZEIC2gnYZtrDMud4u4v_FYzV7e4
+Content-Type: application/json
+
+{
+  "name": "Health"
+}
+
+### Get category by ID
+GET http://localhost:3000/api/article-category/1 HTTP/1.1
+Content-Type: application/json
+
+### List articles
+GET http://localhost:3000/api/article/ HTTP/1.1
+Content-Type: application/json
+
+### Create article
+POST http://localhost:3000/api/article/create HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InphaW5hbHdhbjRAZ21haWwuY29tIiwiaWF0IjoxNjY3MDU0NzQ2fQ.-QZyHdg6tv_L_9ElZEIC2gnYZtrDMud4u4v_FYzV7e4
+Content-Type: application/json
+
+{
+  "title": "Test Title",
+  "content": "Content...",
+  "categoryId": 2
+}
+
+### Get article by ID
+GET http://localhost:3000/api/article/1 HTTP/1.1
+Content-Type: application/json

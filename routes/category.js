@@ -1,13 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const jwt = require('jsonwebtoken');
-const { basicResponse } = require('../util');
+const { authorize, basicResponse } = require('../util');
 
 router.get('/', async (req, res) => {
   let result = await db.query('SELECT * FROM categories');
   if (result.rowCount <= 0) {
     return basicResponse(res, 404, 'There is no category.');
+  }
+  for (let i = 0; i < result.rowCount; i++) {
+    let articles = await db.query(`SELECT * FROM articles
+      WHERE category_id = ${result.rows[i].id}`);
+    result.rows[i].articles = articles.rows.map(article => {
+      delete article.category_id;
+      return article;
+    });
   }
   res.send({
     data: {
@@ -18,15 +25,8 @@ router.get('/', async (req, res) => {
 
 router.post('/create', async (req, res) => {
   let [scheme, credential] = req.get('authorization').split(' ');
-
-  if (scheme.toLowerCase() != 'bearer') {
-    return basicResponse(res, 401, 'Invalid authorization.');
-  }
-
-  try {
-    jwt.verify(credential, process.env.SECRET_KEY);
-  } catch (error) {
-    return basicResponse(res, 401, 'Invalid key');
+  if (!authorize(scheme, credential)) {
+    return basicResponse(res, 401, 'Invalid credential.');
   }
 
   let name = req.body.name;
@@ -62,6 +62,12 @@ router.get('/:categoryId', async (req, res) => {
   if (result.rowCount <= 0) {
     return basicResponse(res, 404, 'Category not found.');
   }
+  let articles = await db.query(`SELECT * FROM articles
+    WHERE category_id = ${id}`);
+  result.rows[0].articles = articles.rows.map(article => {
+    delete article.category_id;
+    return article;
+  });
   return res.send({
     data: {
       category: result.rows[0],
