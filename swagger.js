@@ -1,5 +1,14 @@
 module.exports = {
   openapi: '3.0.0',
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
   info: {
     title: 'Sahaware Back End',
     version: '1.0.0',
@@ -122,6 +131,11 @@ module.exports = {
       post: {
         tags: ['Category'],
         summary: 'Create a new category.',
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         requestBody: {
           content: {
             'application/json': {
@@ -142,6 +156,9 @@ module.exports = {
           },
           400: {
             description: 'Category data is not complete or category already exists.'
+          },
+          401: {
+            description: 'Invalid credential.'
           },
         },
       },
@@ -185,13 +202,18 @@ module.exports = {
       post: {
         tags: ['Article'],
         summary: 'Create a new article.',
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         requestBody: {
           content: {
             'application/json': {
               schema: {
                 type: 'object',
                 properties: {
-                  name: {
+                  title: {
                     type: 'string',
                   },
                   content: {
@@ -211,6 +233,9 @@ module.exports = {
           },
           400: {
             description: 'Article data is not complete.'
+          },
+          401: {
+            description: 'Invalid credential.'
           },
         },
       },

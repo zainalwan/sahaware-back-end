@@ -44,6 +44,10 @@ router.post('/create', authorize, async (req, res) => {
   }
 
   let result = await db.query('SELECT * FROM articles ORDER BY -id LIMIT 1');
+  let category = await db.query(`SELECT * FROM categories
+    WHERE id = ${result.rows[0].category_id}`);
+  result.rows[0].category = category.rows[0];
+  delete result.rows[0].category_id;
   res.send({
     data: {
       article: result.rows[0],
