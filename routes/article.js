@@ -43,7 +43,7 @@ router.post('/create', authorize, async (req, res) => {
     return res.sendStatus(500);
   }
 
-  result = await db.query('SELECT * FROM articles ORDER BY -id LIMIT 1');
+  let result = await db.query('SELECT * FROM articles ORDER BY -id LIMIT 1');
   res.send({
     data: {
       article: result.rows[0],
