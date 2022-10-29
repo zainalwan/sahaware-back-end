@@ -8,6 +8,11 @@ const { basicResponse } = require('../util');
 router.post('/register', async (req, res) => {
   let {email, password} = req.body;
 
+  let result = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+  if (result.rowCount >= 1) {
+    return basicResponse(res, 400, 'Email has been already used.');
+  }
+
   let pattern = /^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$/;
   if (!pattern.test(email)) {
     return basicResponse(res, 400, 'Invalid email.');
