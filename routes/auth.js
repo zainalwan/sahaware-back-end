@@ -8,7 +8,7 @@ const { basicResponse } = require('../util');
 router.post('/register', async (req, res) => {
   let {email, password} = req.body;
 
-  let result = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+  let result = await db.query(`SELECT id FROM users WHERE email = '${email}'`);
   if (result.rowCount >= 1) {
     return basicResponse(res, 400, 'Email has been already used.');
   }
@@ -41,7 +41,7 @@ router.post('/login', async (req, res) => {
   }
 
   let hash = result.rows[0].password;
-  
+
   if (!bcrypt.compareSync(password, hash)) {
     return basicResponse(res, 400, 'Invalid password.');
   }

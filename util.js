@@ -4,7 +4,7 @@ const basicResponse = (res, code, message) => {
       message,
     },
   });
-}
+};
 
 module.exports = {
   basicResponse,
